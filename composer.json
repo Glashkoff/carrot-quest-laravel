@@ -1,0 +1,45 @@
+{
+  "name": "professionalweb/carrot-quest-laravel",
+  "description": "Library to communicate with CarrotQuest",
+  "homepage": "https://github.com/SergioMadness/carrot-quest-laravel",
+  "keywords": [
+    "professional-web",
+    "carrot quest",
+    "laravel"
+  ],
+  "minimum-stability": "stable",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zinchenko Sergey",
+      "email": "zinchenko@web-development.pw"
+    }
+  ],
+  "support": {
+    "email": "zinchenko@web-development.pw",
+    "issues": "https://github.com/SergioMadness/carrot-quest-laravel/issues",
+    "wiki": "https://github.com/SergioMadness/carrot-quest-laravel/wiki",
+    "source": "https://github.com/SergioMadness/carrot-quest-laravel"
+  },
+  "require": {
+    "illuminate/support": "5.*"
+  },
+  "require-dev": {
+  },
+  "config": {
+    "process-timeout": 1800
+  },
+  "autoload": {
+    "psr-4": {
+      "professionalweb\\CarrotQuest\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "professionalweb\\CarrotQuest\\CarrotQuestProvider"
+      ]
+    }
+  }
+}
