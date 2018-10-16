@@ -6,6 +6,8 @@
  */
 interface Channel
 {
+    public const TYPE_MANUAL = 'manual';
+
     /**
      * Get channel id
      *
