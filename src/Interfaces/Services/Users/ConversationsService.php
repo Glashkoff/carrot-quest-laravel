@@ -8,5 +8,12 @@ use professionalweb\CarrotQuest\Interfaces\ListService;
  */
 interface ConversationsService extends ListService
 {
-
+    /**
+     * Set user id
+     *
+     * @param int $userId
+     *
+     * @return ConversationsService
+     */
+    public function setUserId(int $userId): self;
 }

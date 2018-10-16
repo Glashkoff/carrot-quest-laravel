@@ -9,6 +9,15 @@ use professionalweb\CarrotQuest\Interfaces\Sendable;
 interface CloseService extends Sendable
 {
     /**
+     * Set conversation id
+     *
+     * @param int $id
+     *
+     * @return CloseService
+     */
+    public function setConversationId(int $id): self;
+
+    /**
      * Set replier admin id
      *
      * @param int $adminId

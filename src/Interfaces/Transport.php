@@ -4,8 +4,12 @@
  * Interface for transport to communicate with CarrotQuest service
  * @package professionalweb\CarrotQuest\Interfaces
  */
-interface Transport extends Sendable
+interface Transport
 {
+    public const METHOD_GET = 'get';
+
+    public const METHOD_POST = 'post';
+
     /**
      * Set url to send request
      *
@@ -32,4 +36,18 @@ interface Transport extends Sendable
      * @return Transport
      */
     public function setData(array $data): self;
+
+    /**
+     * Send GET request
+     *
+     * @return array
+     */
+    public function get(): array;
+
+    /**
+     * Send POST request
+     *
+     * @return array
+     */
+    public function post(): array;
 }

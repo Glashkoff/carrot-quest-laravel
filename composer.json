@@ -23,6 +23,8 @@
     "source": "https://github.com/SergioMadness/carrot-quest-laravel"
   },
   "require": {
+    "php": ">=7.1",
+    "ext-curl": "*",
     "illuminate/support": "5.*"
   },
   "require-dev": {

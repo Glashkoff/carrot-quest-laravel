@@ -9,6 +9,15 @@ use professionalweb\CarrotQuest\Interfaces\Sendable;
 interface AddEventService extends Sendable
 {
     /**
+     * Set user id
+     *
+     * @param int $userId
+     *
+     * @return AddEventService
+     */
+    public function setUserId(int $userId): self;
+
+    /**
      * Set event name
      *
      * @param string $name

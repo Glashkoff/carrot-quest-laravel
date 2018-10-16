@@ -9,6 +9,15 @@ use professionalweb\CarrotQuest\Interfaces\Sendable;
 interface SetPropertiesService extends Sendable
 {
     /**
+     * Set user id
+     *
+     * @param int $userId
+     *
+     * @return SetPropertiesService
+     */
+    public function setUserId(int $userId): self;
+
+    /**
      * Filter by event name
      *
      * @param array $properties
