@@ -34,13 +34,26 @@ class ConversationService implements IConversationService
     }
 
     /**
+     * Get conversation id
+     *
+     * @return int
+     */
+    public function getConversationId(): int
+    {
+        return $this->conversationId;
+    }
+
+    /**
      * Get service to work with messages in conversation
      *
      * @return MessagesService
      */
     public function messages(): MessagesService
     {
-        // TODO: Implement messages() method.
+        /** @var MessagesService $service */
+        $service = app(MessagesService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**
@@ -50,7 +63,10 @@ class ConversationService implements IConversationService
      */
     public function reply(): ReplyService
     {
-        // TODO: Implement reply() method.
+        /** @var ReplyService $service */
+        $service = app(ReplyService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**
@@ -70,7 +86,10 @@ class ConversationService implements IConversationService
      */
     public function setTyping(): TypingService
     {
-        // TODO: Implement setTyping() method.
+        /** @var TypingService $service */
+        $service = app(TypingService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**
@@ -80,7 +99,10 @@ class ConversationService implements IConversationService
      */
     public function assign(): AssignService
     {
-        // TODO: Implement assign() method.
+        /** @var AssignService $service */
+        $service = app(AssignService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**
@@ -90,7 +112,10 @@ class ConversationService implements IConversationService
      */
     public function tag(): TagService
     {
-        // TODO: Implement tag() method.
+        /** @var TagService $service */
+        $service = app(TagService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**
@@ -100,7 +125,10 @@ class ConversationService implements IConversationService
      */
     public function close(): CloseService
     {
-        // TODO: Implement close() method.
+        /** @var CloseService $service */
+        $service = app(CloseService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**

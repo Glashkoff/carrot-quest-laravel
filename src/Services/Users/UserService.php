@@ -43,13 +43,26 @@ class UserService implements IUserService
     }
 
     /**
+     * Get user id
+     *
+     * @return int
+     */
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    /**
      * Get event service
      *
      * @return EventsService
      */
     public function events(): EventsService
     {
-        // TODO: Implement events() method.
+        /** @var EventsService $service */
+        $service = app(EventsService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**
@@ -59,7 +72,10 @@ class UserService implements IUserService
      */
     public function conversations(): ConversationsService
     {
-        // TODO: Implement conversations() method.
+        /** @var ConversationsService $service */
+        $service = app(ConversationsService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**
@@ -69,7 +85,10 @@ class UserService implements IUserService
      */
     public function addEvent(): AddEventService
     {
-        // TODO: Implement addEvent() method.
+        /** @var AddEventService $service */
+        $service = app(AddEventService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**
@@ -79,7 +98,10 @@ class UserService implements IUserService
      */
     public function setProperties(): SetPropertiesService
     {
-        // TODO: Implement setProperties() method.
+        /** @var SetPropertiesService $service */
+        $service = app(SetPropertiesService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**

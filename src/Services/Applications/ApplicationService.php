@@ -38,7 +38,10 @@ class ApplicationService implements IApplicationService
      */
     public function activeUsers(): ActiveUsersService
     {
-        // TODO: Implement activeUsers() method.
+        /** @var ActiveUsersService $service */
+        $service = app(ActiveUsersService::class);
+
+        return $service->setApplicationId($this->getApplicationId());
     }
 
     /**
@@ -48,7 +51,10 @@ class ApplicationService implements IApplicationService
      */
     public function users(): UsersService
     {
-        // TODO: Implement users() method.
+        /** @var UsersService $service */
+        $service = app(UsersService::class);
+
+        return $service->setApplicationId($this->getApplicationId());
     }
 
     /**
@@ -58,7 +64,10 @@ class ApplicationService implements IApplicationService
      */
     public function getConversations(): ConversationsService
     {
-        // TODO: Implement getConversations() method.
+        /** @var ConversationsService $service */
+        $service = app(ConversationsService::class);
+
+        return $service->setApplicationId($this->getApplicationId());
     }
 
     /**
@@ -68,6 +77,17 @@ class ApplicationService implements IApplicationService
      */
     public function getChannels(): ChannelsService
     {
-        // TODO: Implement getChannels() method.
+        /** @var ChannelsService $service */
+        $service = app(ChannelsService::class);
+
+        return $service->setApplicationId($this->getApplicationId());
+    }
+
+    /**
+     * @return int
+     */
+    public function getApplicationId(): int
+    {
+        return $this->applicationId;
     }
 }

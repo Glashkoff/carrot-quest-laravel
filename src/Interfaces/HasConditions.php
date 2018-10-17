@@ -6,5 +6,5 @@
  */
 interface HasConditions
 {
-    public function where(string $param, string $operator, $values): self;
+    public function where(string $param, string $operator, ...$values): self;
 }
