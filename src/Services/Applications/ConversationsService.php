@@ -2,7 +2,9 @@
 
 use professionalweb\CarrotQuest\Traits\HasLimits;
 use professionalweb\CarrotQuest\Traits\IsSortable;
+use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Traits\HasConditions;
+use professionalweb\CarrotQuest\Interfaces\Transport;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ConversationsService as IConversationService;
 
 /**
@@ -11,7 +13,9 @@ use professionalweb\CarrotQuest\Interfaces\Services\Applications\ConversationsSe
  */
 class ConversationsService implements IConversationService
 {
-    use HasLimits, HasConditions, IsSortable;
+    use HasLimits, HasConditions, IsSortable, UseTransport;
+
+    public const METHOD_CONVERSATIONS = '/apps/{id}/conversations';
 
     //<editor-fold desc="Fields">
     /**
@@ -43,7 +47,13 @@ class ConversationsService implements IConversationService
      * @var int
      */
     private $channel;
+
     //</editor-fold>
+
+    public function __construct(Transport $transport)
+    {
+        $this->setTransport($transport);
+    }
 
     /**
      * Include not assigned conversations
@@ -164,7 +174,41 @@ class ConversationsService implements IConversationService
      */
     public function get(): array
     {
-        // TODO: Implement get() method.
+        return $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Prepare params for request
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        if (($includeNotAssigned = $this->doIncludeNotAssigned()) !== null) {
+            $result['include_not_assigned'] = $includeNotAssigned;
+        }
+        if (($closed = $this->doIncludeClosed()) !== null) {
+            $result['closed'] = $closed;
+        }
+        if (!empty($tags = $this->getTags())) {
+            $result['tags'] = implode(',', $tags);
+        }
+        if (($assigned = $this->getAssignedTo()) !== null) {
+            $result['assigned'] = $assigned;
+        }
+        if (($channel = $this->getChannel()) !== null) {
+            $result['channel'] = $channel;
+        }
+        if (($limit = $this->getLimit()) !== null) {
+            $result['count'] = $limit;
+        }
+        if (($offset = $this->getOffset()) !== null) {
+            $result['after'] = $offset;
+        }
+
+        return $result;
     }
 
     /**
@@ -187,5 +231,15 @@ class ConversationsService implements IConversationService
     public function getApplicationId(): int
     {
         return $this->applicationId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getApplicationId(), self::METHOD_CONVERSATIONS);
     }
 }

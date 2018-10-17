@@ -6,7 +6,7 @@ use professionalweb\CarrotQuest\Interfaces\Services\Applications\ApplicationServ
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ConversationService;
 
 /**
- * Main CarrotQuestService
+ * Main CarrotQuest service
  * @package professionalweb\CarrotQuest\Services
  */
 class CarrotQuest implements CarrotQuestService
@@ -19,7 +19,7 @@ class CarrotQuest implements CarrotQuestService
      */
     public function apps(): ApplicationService
     {
-        // TODO: Implement apps() method.
+        return app(ApplicationService::class);
     }
 
     /**
@@ -29,7 +29,7 @@ class CarrotQuest implements CarrotQuestService
      */
     public function conversations(): ConversationService
     {
-        // TODO: Implement conversations() method.
+        return app(ConversationService::class);
     }
 
     /**
@@ -39,7 +39,7 @@ class CarrotQuest implements CarrotQuestService
      */
     public function users(): UserService
     {
-        // TODO: Implement users() method.
+        return app(UserService::class);
     }
 
     /**

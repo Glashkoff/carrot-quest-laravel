@@ -29,25 +29,22 @@ interface Transport
     public function setAuthToken(string $token): self;
 
     /**
-     * Set data to send to service
-     *
-     * @param array $data
-     *
-     * @return Transport
-     */
-    public function setData(array $data): self;
-
-    /**
      * Send GET request
+     *
+     * @param string $method
+     * @param array  $data
      *
      * @return array
      */
-    public function get(): array;
+    public function get(string $method, array $data = []): array;
 
     /**
      * Send POST request
      *
+     * @param string $method
+     * @param array  $data
+     *
      * @return array
      */
-    public function post(): array;
+    public function post(string $method, array $data = []): array;
 }

@@ -15,6 +15,8 @@ class UsersService implements IUsersService
 {
     use UseTransport, IsSortable, HasConditions, HasLimits;
 
+    public const METHOD_USERS = '/apps/{id}/users';
+
     /**
      * @var int
      */
@@ -30,7 +32,27 @@ class UsersService implements IUsersService
      */
     public function get(): array
     {
-        // TODO: Implement get() method.
+        return $this->getTransport()->get($this->getMethod());
+    }
+
+    protected function getParams(): array
+    {
+        $params = [];
+
+        if (($sortProp = $this->getOrderBy()) !== null) {
+            $params['sort_prop'] = $sortProp;
+        }
+        if (($sorting = $this->getSorting()) !== null) {
+            $params['sort_order'] = $sorting;
+        }
+        if (($limit = $this->getLimit()) !== null) {
+            $result['limit'] = $limit;
+        }
+        if (($offset = $this->getOffset()) !== null) {
+            $result['offset'] = $offset;
+        }
+
+        return $params;
     }
 
     /**
@@ -53,5 +75,15 @@ class UsersService implements IUsersService
     public function getApplicationId(): int
     {
         return $this->applicationId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getApplicationId(), self::METHOD_USERS);
     }
 }

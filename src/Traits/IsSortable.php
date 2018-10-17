@@ -37,4 +37,24 @@ trait IsSortable
 
         return $this;
     }
+
+    /**
+     * Get field sort by
+     *
+     * @return null|string
+     */
+    public function getOrderBy(): ?string
+    {
+        return $this->orderBy;
+    }
+
+    /**
+     * SORT_DESC or SORT_ASC
+     *
+     * @return int|null
+     */
+    public function getSorting(): ?int
+    {
+        return $this->sortBy;
+    }
 }

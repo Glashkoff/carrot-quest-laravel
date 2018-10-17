@@ -18,10 +18,10 @@ class Transport implements ITransport
      */
     private $authToken;
 
-    /**
-     * @var array
-     */
-    private $data;
+    public function __construct(string $url = '', string $authToken = '')
+    {
+        $this->setUrl($url)->setAuthToken($authToken);
+    }
 
     /**
      * Send request
@@ -70,6 +70,50 @@ class Transport implements ITransport
     }
 
     /**
+     * Send GET request
+     *
+     * @param string $method
+     * @param array  $data
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function get(string $method, array $data = []): array
+    {
+        $responseStr = $this->send(self::METHOD_GET, $this->prepareUrl($method), $data);
+
+        return json_decode($responseStr, true);
+    }
+
+    /**
+     * Send POST request
+     *
+     * @param string $method
+     * @param array  $data
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function post(string $method, array $data = []): array
+    {
+        $responseStr = $this->send(self::METHOD_POST, $this->prepareUrl($method), $data);
+
+        return json_decode($responseStr, true);
+    }
+
+    /**
+     * Get full url to method
+     *
+     * @param string $method
+     *
+     * @return string
+     */
+    protected function prepareUrl(string $method): string
+    {
+        return rtrim($this->getUrl(), '/') . '/' . ltrim($method, '/');
+    }
+
+    /**
      * Set url to send request
      *
      * @param string $url
@@ -98,20 +142,6 @@ class Transport implements ITransport
     }
 
     /**
-     * Set data to send to service
-     *
-     * @param array $data
-     *
-     * @return ITransport
-     */
-    public function setData(array $data): ITransport
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getUrl(): string
@@ -125,39 +155,5 @@ class Transport implements ITransport
     public function getAuthToken(): string
     {
         return $this->authToken;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData(): array
-    {
-        return $this->data;
-    }
-
-    /**
-     * Send GET request
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function get(): array
-    {
-        $responseStr = $this->send(self::METHOD_GET, $this->getUrl(), $this->getData());
-
-        return json_decode($responseStr, true);
-    }
-
-    /**
-     * Send POST request
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function post(): array
-    {
-        $responseStr = $this->send(self::METHOD_POST, $this->getUrl(), $this->getData());
-
-        return json_decode($responseStr, true);
     }
 }

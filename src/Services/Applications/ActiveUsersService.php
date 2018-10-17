@@ -12,6 +12,8 @@ class ActiveUsersService implements IActiveUsersService
 {
     use UseTransport;
 
+    public const METHOD_ACTIVE_USERS = '/apps/{id}/activeusers';
+
     /**
      * @var int
      */
@@ -27,7 +29,7 @@ class ActiveUsersService implements IActiveUsersService
      */
     public function get(): array
     {
-        // TODO: Implement get() method.
+        return $this->getTransport()->get($this->getMethod())['data'] ?? [];
     }
 
     /**
@@ -48,5 +50,15 @@ class ActiveUsersService implements IActiveUsersService
         $this->applicationId = $applicationId;
 
         return $this;
+    }
+
+    /**
+     * Get method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getApplicationId(), self::METHOD_ACTIVE_USERS);
     }
 }
