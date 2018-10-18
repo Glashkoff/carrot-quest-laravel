@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use professionalweb\CarrotQuest\Services\Transport;
 use professionalweb\CarrotQuest\Services\CarrotQuest;
@@ -24,6 +25,7 @@ use professionalweb\CarrotQuest\Services\Conversations\MessagesService;
 use professionalweb\CarrotQuest\Services\Users\StartConversationService;
 use professionalweb\CarrotQuest\Services\Applications\ActiveUsersService;
 use professionalweb\CarrotQuest\Services\Applications\ApplicationService;
+use professionalweb\CarrotQuest\Facades\CarrotQuest as CarrotQuestFacade;
 use professionalweb\CarrotQuest\Services\Applications\ConversationsService;
 use professionalweb\CarrotQuest\Services\Conversations\ConversationService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\UserService as IUserService;
@@ -53,7 +55,8 @@ class CarrotQuestProvider extends ServiceProvider
 {
     public function boot(): void
     {
-
+        $loader = AliasLoader::getInstance();
+        $loader->alias('CarrotQuest', CarrotQuestFacade::class);
     }
 
     public function register(): void
