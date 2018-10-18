@@ -30,14 +30,4 @@ interface CarrotQuestService
      * @return UserService
      */
     public function users(): UserService;
-
-    /**
-     * Send event
-     *
-     * @param string $eventname
-     * @param array  $eventParams
-     *
-     * @return mixed
-     */
-    public function event(string $eventname, array $eventParams = []);
 }

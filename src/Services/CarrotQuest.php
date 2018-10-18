@@ -41,17 +41,4 @@ class CarrotQuest implements CarrotQuestService
     {
         return app(UserService::class);
     }
-
-    /**
-     * Send event
-     *
-     * @param string $eventname
-     * @param array  $eventParams
-     *
-     * @return mixed
-     */
-    public function event(string $eventname, array $eventParams = [])
-    {
-        // TODO: Implement event() method.
-    }
 }
