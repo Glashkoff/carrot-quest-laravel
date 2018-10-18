@@ -28,90 +28,136 @@ trait HasConditions
      * @param mixed  $value
      *
      * @return IHasConditions
+     * @throws \Exception
      */
     public function where(string $param, string $operator, $value): IHasConditions
     {
+        $this->prepareCondition($operator, $value);
 
-    }
-
-    protected function getOperator(string $operator, $value): string
-    {
-        switch ($operator) {
-            case '=':
-                return $this->equal($value);
-            case'!=':
-                return $this->notEqual($value);
-            case '>':
-                return $this->greater()
-        }
+        return $this->addWhere($operator, $param, $value);
     }
 
     /**
-     * Get equal operand
+     * Map user condition to CarrotQuest condition
      *
-     * @param $value
+     * @param string $operator
+     * @param        $value
+     * @param bool   $strict
      *
-     * @return string
      * @throws \Exception
      */
-    protected function equal($value): string
+    protected function prepareCondition(string &$operator, &$value, bool $strict = true): void
     {
+        $isDate = \is_string($value) && strtotime($value) !== false;
         if (\is_bool($value)) {
-            return $value ? 'bool_true' : 'bool_false';
+            $operator = $value ? 'bool_true' : 'bool_false';
+        } elseif (\is_numeric($value) || \is_array($value)) {
+            switch ($operator) {
+                case '=':
+                    $operator = 'eq';
+                    $value = ['value' => $value];
+                    break;
+                case '!=':
+                    $operator = 'neq';
+                    $value = ['value' => $value];
+                    break;
+                case '>':
+                    $operator = $strict ? 'gt' : 'gt_or_unknown';
+                    $value = ['value' => $value];
+                    break;
+                case '<':
+                    $operator = $strict ? 'lt' : 'lt_or_unknown';
+                    $value = ['value' => $value];
+                    break;
+                case 'in':
+                    $operator = 'range';
+                    $value = ['value1' => $value[0], 'value2' => $value[1]];
+                    break;
+                case 'unknown':
+                case 'empty':
+                    $operator = 'unknown';
+                    $value = [];
+                    break;
+                case 'known':
+                case '!empty':
+                    $operator = 'known';
+                    $value = [];
+                    break;
+                default:
+                    throw new \Exception('Wrong operator for type');
+            }
+        } elseif ($isDate) {
+            $valParts = explode(' ', $value);
+            $value = ['value' => $value[0], 'unit' => $valParts[1] ?? 'days'];
+            switch ($operator) {
+                case '>':
+                    $operator = $strict ? 'daysmore' : 'daysmore_or_unknown';
+                    break;
+                case '<':
+                    $operator = $strict ? 'daysless' : 'daysless_or_unknown';
+                    break;
+                case 'unknown':
+                case 'empty':
+                    $operator = 'unknown';
+                    $value = [];
+                    break;
+                case 'known':
+                case '!empty':
+                    $operator = 'known';
+                    $value = [];
+                    break;
+                default:
+                    throw new \Exception('Wrong operator for type');
+            }
+        } elseif (\is_string($value)) {
+            $value = ['value' => $value];
+            switch ($operator) {
+                case '=':
+                    $operator = 'str_eq';
+                    break;
+                case '!=':
+                    $operator = 'str_neq';
+                    break;
+                case 'contains':
+                    $operator = 'str_contains';
+                    break;
+                case '!contains':
+                    $operator = 'str_notcontains';
+                    break;
+                case 'unknown':
+                case 'empty':
+                    $operator = 'unknown';
+                    $value = [];
+                    break;
+                case 'known':
+                case '!empty':
+                    $operator = 'known';
+                    $value = [];
+                    break;
+                default:
+                    throw new \Exception('Wrong operator for type');
+            }
         }
-        if (\is_numeric($value)) {
-            return 'eq';
-        }
-        if (\is_string($value)) {
-            return 'str_eq';
-        }
-        throw new \Exception('Wrong operator for type');
     }
 
     /**
-     * Get not equal operand
+     * Add condition
      *
-     * @param $value
+     * @param string $type
+     * @param string $param
+     * @param mixed  $value
      *
-     * @return string
-     * @throws \Exception
+     * @return IHasConditions
      */
-    protected function notEqual($value): string
+    protected function addWhere(string $type, string $param, $value = []): IHasConditions
     {
-        if (\is_bool($value)) {
-            return $this->equal(!$value);
-        }
-        if (\is_numeric($value)) {
-            return 'neq';
-        }
-        if (\is_string($value)) {
-            return 'str_neq';
-        }
-        throw new \Exception('Wrong operator for type');
-    }
+        $this->wheres[] = [
+            'type'          => $type,
+            'property_name' => $param,
+            'value'         => $value,
+        ];
 
-    /**
-     * Greater than
-     *
-     * @param bool $strict
-     *
-     * @return string
-     */
-    protected function greater(bool $strict = true): string
-    {
-        return $strict ? 'gt' : 'gt_or_unknown';
-    }
-
-    /**
-     * Less than
-     *
-     * @param bool $strict
-     *
-     * @return string
-     */
-    protected function less(bool $strict = true): string
-    {
-        return $strict ? 'lt' : 'lt_or_unknown';
+        return $this;
     }
 
     /**
@@ -121,7 +167,10 @@ trait HasConditions
      *
      * @return IHasConditions
      */
-    public function whereEmpty(string $param): IHasConditions;
+    public function whereEmpty(string $param): IHasConditions
+    {
+        return $this->addWhere('unknown', $param);
+    }
 
     /**
      * Where param not empty
@@ -130,7 +179,10 @@ trait HasConditions
      *
      * @return IHasConditions
      */
-    public function whereNotEmpty(string $param): IHasConditions;
+    public function whereNotEmpty(string $param): IHasConditions
+    {
+        return $this->addWhere('known', $param);
+    }
 
     /**
      * Where condition not strict
@@ -140,8 +192,14 @@ trait HasConditions
      * @param mixed  ...$value
      *
      * @return IHasConditions
+     * @throws \Exception
      */
-    public function whereNotStrict(string $param, string $operator, $value): IHasConditions;
+    public function whereNotStrict(string $param, string $operator, $value): IHasConditions
+    {
+        $this->prepareCondition($operator, $value, false);
+
+        return $this->addWhere($operator, $param, $value);
+    }
 
     /**
      * Where value between $value1 and $value2
@@ -152,7 +210,13 @@ trait HasConditions
      *
      * @return IHasConditions
      */
-    public function whereBetween(string $param, $value1, $value2): IHasConditions;
+    public function whereBetween(string $param, $value1, $value2): IHasConditions
+    {
+        return $this->addWhere('range', $param, [
+            'value1' => $value1,
+            'value2' => $value2,
+        ]);
+    }
 
     /**
      * Where param contains string
@@ -162,7 +226,12 @@ trait HasConditions
      *
      * @return IHasConditions
      */
-    public function whereContains(string $param, string $value): IHasConditions;
+    public function whereContains(string $param, string $value): IHasConditions
+    {
+        return $this->addWhere('str_contains', $param, [
+            'value' => $value,
+        ]);
+    }
 
     /**
      * Where param not contains string
@@ -172,7 +241,12 @@ trait HasConditions
      *
      * @return IHasConditions
      */
-    public function whereNotContains(string $param, string $value): IHasConditions;
+    public function whereNotContains(string $param, string $value): IHasConditions
+    {
+        return $this->addWhere('str_notcontains', $param, [
+            'value' => $value,
+        ]);
+    }
 
     /**
      * Where value in list
@@ -182,7 +256,12 @@ trait HasConditions
      *
      * @return IHasConditions
      */
-    public function whereInList(string $param, $value): IHasConditions;
+    public function whereInList(string $param, $value): IHasConditions
+    {
+        return $this->addWhere('lcontains', $param, [
+            'value' => $value,
+        ]);
+    }
 
     /**
      * Set type
@@ -218,6 +297,11 @@ trait HasConditions
         return $this->wheres;
     }
 
+    /**
+     * Get filter
+     *
+     * @return array
+     */
     public function getFilter(): array
     {
         $conditions = $this->getConditions();
@@ -225,19 +309,9 @@ trait HasConditions
             return [];
         }
 
-        $result = [
+        return [
             'type'    => $this->getType(),
-            'filters' => [],
+            'filters' => $conditions,
         ];
-
-        foreach ($conditions as $condition) {
-            $result['filters'][] = [
-                'property_name' => $condition[0],
-                'type'          => $condition[1],
-                'value'         => $condition[2],
-            ];
-        }
-
-        return $result;
     }
 }

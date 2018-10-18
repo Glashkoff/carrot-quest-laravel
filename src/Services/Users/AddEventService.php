@@ -12,6 +12,8 @@ class AddEventService implements IAddEventService
 {
     use UseTransport;
 
+    public const METHOD_ADD_EVENT = '/users/{id}/events';
+
     /**
      * @var int
      */
@@ -165,6 +167,38 @@ class AddEventService implements IAddEventService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        return $this->getTransport()->post($this->getMethod(), $this->prepareParams())['data'] ?? [];
+    }
+
+    /**
+     * Prepare params
+     *
+     * @return array
+     */
+    protected function prepareParams(): array
+    {
+        $result = ['event' => $this->getEventName()];
+
+        if (($params = $this->getParams()) !== null) {
+            $result['params'] = $params;
+        }
+        if (($createdAt = $this->getCreatedAt()) !== null) {
+            $result['created'] = $createdAt;
+        }
+        if (($userId = $this->getUserId()) !== null) {
+            $result['by_user_id'] = $userId;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getUserId(), self::METHOD_ADD_EVENT);
     }
 }

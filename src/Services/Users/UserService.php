@@ -15,6 +15,8 @@ use professionalweb\CarrotQuest\Interfaces\Services\Users\UserService as IUserSe
 class UserService implements IUserService
 {
 
+    public const METHOD_GET_USER = '/users/{id}';
+
     /**
      * @var int
      */

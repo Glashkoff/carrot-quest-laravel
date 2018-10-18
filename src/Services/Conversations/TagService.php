@@ -12,6 +12,8 @@ class TagService implements ITagService
 {
     use UseTransport;
 
+    public const METHOD_TAG = '/conversations/{id}/tag';
+
     /**
      * @var int
      */
@@ -42,7 +44,10 @@ class TagService implements ITagService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        $params = $this->getParams();
+        $params['action'] = 'add';
+
+        return $this->getTransport()->post($this->getMethod(), $params)['data'] ?? [];
     }
 
     /**
@@ -100,7 +105,30 @@ class TagService implements ITagService
      */
     public function delete(): bool
     {
-        // TODO: Implement delete() method.
+        $params = $this->getParams();
+        $params['action'] = 'delete';
+        $result = $this->getTransport()->post($this->getMethod(), $params);
+
+        return isset($result['meta']) && $result['meta']['status'] < 300;
+    }
+
+    /**
+     * Prepare params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = ['tag' => $this->getTag()];
+
+        if (($fromAdmin = $this->getAdminId()) !== null) {
+            $result['from_admin'] = $fromAdmin;
+        }
+        if (($botName = $this->getBotName()) !== null) {
+            $result['bot_name'] = $botName;
+        }
+
+        return $result;
     }
 
     /**
@@ -149,5 +177,15 @@ class TagService implements ITagService
     public function getBotName(): ?string
     {
         return $this->botName;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_TAG);
     }
 }

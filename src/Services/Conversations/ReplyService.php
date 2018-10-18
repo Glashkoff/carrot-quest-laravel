@@ -12,6 +12,8 @@ class ReplyService implements IReplyService
 {
     use UseTransport;
 
+    public const METHOD_REPLY = '/conversations/{id}/reply';
+
     //<editor-fold desc="Fields">
     /**
      * @var int
@@ -47,6 +49,7 @@ class ReplyService implements IReplyService
      * @var int
      */
     private $autoAssignId;
+
     //</editor-fold>
 
     public function __construct(Transport $transport)
@@ -199,7 +202,33 @@ class ReplyService implements IReplyService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Prepare params for request
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        $result['body'] = $this->getBody();
+        if (($fromUser = $this->isFromUser()) !== null) {
+            $result['from_user'] = $fromUser;
+        }
+        if (($adminId = $this->getAdminId()) !== null) {
+            $result['from_admin'] = $adminId;
+        }
+        if ($this->isNote()) {
+            $result['type'] = 'note';
+        }
+        if (($autoAssign = $this->getAutoAssignId()) !== null) {
+            $result['auto_assign'] = $autoAssign;
+        }
+
+        return $result;
     }
 
     /**
@@ -224,5 +253,15 @@ class ReplyService implements IReplyService
     public function getConversationId(): int
     {
         return $this->conversationId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_REPLY);
     }
 }

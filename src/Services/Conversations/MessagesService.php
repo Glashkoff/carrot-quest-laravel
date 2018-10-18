@@ -13,6 +13,8 @@ class MessagesService implements IMessagesService
 {
     use HasLimits, UseTransport;
 
+    public const METHOD_ASSIGN = '/conversations/{id}/parts';
+
     /**
      * @var int
      */
@@ -28,7 +30,26 @@ class MessagesService implements IMessagesService
      */
     public function get(): array
     {
-        // TODO: Implement get() method.
+        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Get params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        if (($limit = $this->getLimit()) !== null) {
+            $result['count'] = $limit;
+        }
+        if (($offset = $this->getOffset()) !== null) {
+            $result['after'] = $offset;
+        }
+
+        return $result;
     }
 
     /**
@@ -53,5 +74,15 @@ class MessagesService implements IMessagesService
     public function getConversationId(): int
     {
         return $this->conversationId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_ASSIGN);
     }
 }

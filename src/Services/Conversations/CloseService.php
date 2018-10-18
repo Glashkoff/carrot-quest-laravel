@@ -12,6 +12,8 @@ class CloseService implements ICloseService
 {
     use UseTransport;
 
+    public const METHOD_CLOSE = '/conversations/{id}/close';
+
     /**
      * @var int
      */
@@ -85,7 +87,26 @@ class CloseService implements ICloseService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Get params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        if (($adminId = $this->getAdminId()) !== null) {
+            $result['from_admin'] = $adminId;
+        }
+        if (($botName = $this->getBotName()) !== null) {
+            $result['bot_name'] = $botName;
+        }
+
+        return $result;
     }
 
     /**
@@ -110,5 +131,15 @@ class CloseService implements ICloseService
     public function getConversationId(): int
     {
         return $this->conversationId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_CLOSE);
     }
 }

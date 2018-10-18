@@ -13,6 +13,8 @@ class EventsService implements IEventsService
 {
     use UseTransport, HasLimits;
 
+    public const METHOD_GET_EVENTS = '/users/{id}/events';
+
     /**
      * @var int
      */
@@ -81,6 +83,38 @@ class EventsService implements IEventsService
      */
     public function get(): array
     {
-        // TODO: Implement get() method.
+        return $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Prepare params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        if (($filter = $this->getEventName()) !== null) {
+            $result['filter_name'] = $filter;
+        }
+        if (($limit = $this->getLimit()) !== null) {
+            $result['count'] = $limit;
+        }
+        if (($offset = $this->getOffset()) !== null) {
+            $result['after'] = $offset;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getUserId(), self::METHOD_GET_EVENTS);
     }
 }

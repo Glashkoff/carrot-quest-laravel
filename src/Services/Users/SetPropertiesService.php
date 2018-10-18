@@ -12,6 +12,8 @@ class SetPropertiesService implements ISetPropertiesService
 {
     use UseTransport;
 
+    public const METHOD_SET_PROPERTIES = '/users/{id}/props';
+
     /**
      * @var int
      */
@@ -37,7 +39,24 @@ class SetPropertiesService implements ISetPropertiesService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Get params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = ['operations' => array_map(function () {
+
+        }, $this->getProperties())];
+        if (($userId = $this->getUserId()) !== null) {
+            $result['by_user_id'] = $userId;
+        }
+
+        return $result;
     }
 
     /**
@@ -65,7 +84,7 @@ class SetPropertiesService implements ISetPropertiesService
     }
 
     /**
-     * Filter by event name
+     * Set properties
      *
      * @param array $properties
      *
@@ -110,5 +129,15 @@ class SetPropertiesService implements ISetPropertiesService
     public function isByUserId(): ?bool
     {
         return $this->isByUserId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getUserId(), self::METHOD_SET_PROPERTIES);
     }
 }

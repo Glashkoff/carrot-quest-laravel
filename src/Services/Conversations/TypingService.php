@@ -12,6 +12,8 @@ class TypingService implements ITypingService
 {
     use UseTransport;
 
+    public const METHOD_TYPING = '/conversations/{id}/settyping';
+
     /**
      * @var int
      */
@@ -47,7 +49,32 @@ class TypingService implements ITypingService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Prepare params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        if (($body = $this->getBody()) !== null) {
+            $result['body'] = $body;
+        }
+        if ($this->isFromUser()) {
+            $result['from_user'] = true;
+        }
+        if (($adminId = $this->getAdminId()) !== null) {
+            $result['from_admin'] = $adminId;
+        }
+        if (($botName = $this->getBotName()) !== null) {
+            $result['bot_name'] = $botName;
+        }
+
+        return $result;
     }
 
     /**
@@ -168,5 +195,15 @@ class TypingService implements ITypingService
     public function getBotName(): ?string
     {
         return $this->botName;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_TYPING);
     }
 }

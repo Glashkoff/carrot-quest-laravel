@@ -45,7 +45,7 @@ class ActiveUsersService implements IActiveUsersService
      *
      * @return $this
      */
-    public function setApplicationId(int $applicationId): self
+    public function setApplicationId(int $applicationId): IActiveUsersService
     {
         $this->applicationId = $applicationId;
 

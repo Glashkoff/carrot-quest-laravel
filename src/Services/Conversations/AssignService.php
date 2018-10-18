@@ -12,6 +12,8 @@ class AssignService implements IAssignService
 {
     use UseTransport;
 
+    public const METHOD_ASSIGN = '/conversations/{id}/assign';
+
     /**
      * @var int
      */
@@ -114,7 +116,29 @@ class AssignService implements IAssignService
      */
     public function send()
     {
-        // TODO: Implement send() method.
+        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+    }
+
+    /**
+     * Get params
+     *
+     * @return array
+     */
+    protected function getParams(): array
+    {
+        $result = [];
+
+        if (($adminId = $this->getAdminId()) !== null) {
+            $result['admin'] = $adminId;
+        }
+        if (($fromAdmin = $this->getFromAdmin()) !== null) {
+            $result['from_admin'] = $fromAdmin;
+        }
+        if (($botName = $this->getBotName()) !== null) {
+            $result['bot_name'] = $botName;
+        }
+
+        return $result;
     }
 
     /**
@@ -139,5 +163,15 @@ class AssignService implements IAssignService
     public function getConversationId(): int
     {
         return $this->conversationId;
+    }
+
+    /**
+     * Get API method
+     *
+     * @return string
+     */
+    protected function getMethod(): string
+    {
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_ASSIGN);
     }
 }
