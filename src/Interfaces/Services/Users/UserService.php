@@ -1,18 +1,11 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Users;
 
-use professionalweb\CarrotQuest\Interfaces\GetData;
-use professionalweb\CarrotQuest\Interfaces\Models\Message;
-use professionalweb\CarrotQuest\Interfaces\Models\Conversation;
-
 /**
  * Interface for service to work with users
  * @package professionalweb\CarrotQuest\Interfaces\Services\Users
  */
-interface UserService extends GetData
+interface UserService
 {
-    public const STATUS_ONLINE = 'online';
-
-    public const STATUS_IDLE = 'idle';
 
     /**
      * Set user id
@@ -54,38 +47,28 @@ interface UserService extends GetData
     /**
      * Set user's status
      *
-     * @param string $status
-     * @param string $sessionId
-     *
-     * @return bool
+     * @return SetStatusService
      */
-    public function setStatus(string $status, string $sessionId): bool;
+    public function setStatus(): SetStatusService;
 
     /**
      * Send message
      *
-     * @param string $body
-     * @param string $type
-     *
-     * @return Message
+     * @return SendMessageService
      */
-    public function sendMessage(string $body, string $type = Conversation::TYPE_POPUP_CHAT): Message;
+    public function sendMessage(): SendMessageService;
 
     /**
      * Start conversation
      *
-     * @param string $body
-     *
-     * @return Conversation
+     * @return StartConversationService
      */
-    public function startConversation(string $body): Conversation;
+    public function startConversation(): StartConversationService;
 
     /**
      * Unsubscribe user
      *
-     * @param bool $byUserId
-     *
-     * @return bool
+     * @return UnsubscribeService
      */
-    public function unsubscribe(bool $byUserId = false): bool;
+    public function unsubscribe(): UnsubscribeService;
 }

@@ -5,7 +5,11 @@ use professionalweb\CarrotQuest\Services\Transport;
 use professionalweb\CarrotQuest\Services\CarrotQuest;
 use professionalweb\CarrotQuest\Services\Users\UserService;
 use professionalweb\CarrotQuest\Services\Users\EventsService;
+use professionalweb\CarrotQuest\Services\Users\GetUserService;
 use professionalweb\CarrotQuest\Services\Users\AddEventService;
+use professionalweb\CarrotQuest\Services\Users\SetStatusService;
+use professionalweb\CarrotQuest\Services\Users\SendMessageService;
+use professionalweb\CarrotQuest\Services\Users\UnsubscribeService;
 use professionalweb\CarrotQuest\Services\Conversations\TagService;
 use professionalweb\CarrotQuest\Interfaces\Transport as ITransport;
 use professionalweb\CarrotQuest\Services\Applications\UsersService;
@@ -17,6 +21,7 @@ use professionalweb\CarrotQuest\Services\Conversations\TypingService;
 use professionalweb\CarrotQuest\Services\Applications\ChannelsService;
 use professionalweb\CarrotQuest\Interfaces\Services\CarrotQuestService;
 use professionalweb\CarrotQuest\Services\Conversations\MessagesService;
+use professionalweb\CarrotQuest\Services\Users\StartConversationService;
 use professionalweb\CarrotQuest\Services\Applications\ActiveUsersService;
 use professionalweb\CarrotQuest\Services\Applications\ApplicationService;
 use professionalweb\CarrotQuest\Services\Applications\ConversationsService;
@@ -26,11 +31,14 @@ use professionalweb\CarrotQuest\Interfaces\Services\Users\EventsService as IEven
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\TagService as ITagService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\AddEventService as IAddEventService;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\UsersService as IUsersService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\SetStatusService as ISetStatusService;
 use professionalweb\CarrotQuest\Services\Users\ConversationsService as UserConversationsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ReplyService as IReplyService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\CloseService as ICloseService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\TypingService as ITypingService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\AssignService as IAssignService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\SendMessageService as ISendMessageService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\UnsubscribeService as IUnsubscribeService;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ChannelsService as IChannelsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\MessagesService as IMessagesService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\SetPropertiesService as ISetPropertiesService;
@@ -39,6 +47,7 @@ use professionalweb\CarrotQuest\Interfaces\Services\Applications\ApplicationServ
 use professionalweb\CarrotQuest\Interfaces\Services\Users\ConversationsService as IUserConversationsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ConversationService as IConversationService;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ConversationsService as IConversationsService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\StartConversationService as IStartConversationService;
 
 class CarrotQuestProvider extends ServiceProvider
 {
@@ -76,8 +85,13 @@ class CarrotQuestProvider extends ServiceProvider
         // Users services
         $this->app->bind(IUserService::class, UserService::class);
         $this->app->bind(IEventsService::class, EventsService::class);
+        $this->app->bind(GetUserService::class, GetUserService::class);
         $this->app->bind(IAddEventService::class, AddEventService::class);
+        $this->app->bind(ISetStatusService::class, SetStatusService::class);
+        $this->app->bind(ISendMessageService::class, SendMessageService::class);
+        $this->app->bind(IUnsubscribeService::class, UnsubscribeService::class);
         $this->app->bind(ISetPropertiesService::class, SetPropertiesService::class);
         $this->app->bind(IUserConversationsService::class, UserConversationsService::class);
+        $this->app->bind(IStartConversationService::class, StartConversationService::class);
     }
 }

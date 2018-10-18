@@ -6,6 +6,10 @@
  */
 interface User
 {
+    public const STATUS_ONLINE = 'online';
+
+    public const STATUS_IDLE = 'idle';
+
     /**
      * Get id
      *

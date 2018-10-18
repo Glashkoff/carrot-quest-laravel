@@ -1,11 +1,13 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
-use professionalweb\CarrotQuest\Interfaces\Models\Message;
-use professionalweb\CarrotQuest\Interfaces\Models\Conversation;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\EventsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\AddEventService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\SetStatusService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\UnsubscribeService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\SendMessageService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\ConversationsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\SetPropertiesService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\StartConversationService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\UserService as IUserService;
 
 /**
@@ -15,20 +17,10 @@ use professionalweb\CarrotQuest\Interfaces\Services\Users\UserService as IUserSe
 class UserService implements IUserService
 {
 
-    public const METHOD_GET_USER = '/users/{id}';
-
     /**
      * @var int
      */
     private $userId;
-
-    /**
-     * @return array
-     */
-    public function get(): array
-    {
-        // TODO: Implement get() method.
-    }
 
     /**
      * Set user id
@@ -109,50 +101,52 @@ class UserService implements IUserService
     /**
      * Set user's status
      *
-     * @param string $status
-     * @param string $sessionId
-     *
-     * @return bool
+     * @return SetStatusService
      */
-    public function setStatus(string $status, string $sessionId): bool
+    public function setStatus(): SetStatusService
     {
-        // TODO: Implement setStatus() method.
+        /** @var SetStatusService $service */
+        $service = app(SetStatusService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**
      * Send message
      *
-     * @param string $body
-     * @param string $type
-     *
-     * @return Message
+     * @return SendMessageService
      */
-    public function sendMessage(string $body, string $type = Conversation::TYPE_POPUP_CHAT): Message
+    public function sendMessage(): SendMessageService
     {
-        // TODO: Implement sendMessage() method.
+        /** @var SendMessageService $service */
+        $service = app(SendMessageService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**
      * Start conversation
      *
-     * @param string $body
-     *
-     * @return Conversation
+     * @return StartConversationService
      */
-    public function startConversation(string $body): Conversation
+    public function startConversation(): StartConversationService
     {
-        // TODO: Implement startConversation() method.
+        /** @var StartConversationService $service */
+        $service = app(StartConversationService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 
     /**
      * Unsubscribe user
      *
-     * @param bool $byUserId
-     *
-     * @return bool
+     * @return UnsubscribeService
      */
-    public function unsubscribe(bool $byUserId = false): bool
+    public function unsubscribe(): UnsubscribeService
     {
-        // TODO: Implement unsubscribe() method.
+        /** @var UnsubscribeService $service */
+        $service = app(UnsubscribeService::class);
+
+        return $service->setUserId($this->getUserId());
     }
 }
