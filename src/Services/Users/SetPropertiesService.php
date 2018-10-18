@@ -1,7 +1,9 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
+use professionalweb\CarrotQuest\Models\Property;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
+use professionalweb\CarrotQuest\Interfaces\Models\Property as IProperty;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\SetPropertiesService as ISetPropertiesService;
 
 /**
@@ -49,8 +51,8 @@ class SetPropertiesService implements ISetPropertiesService
      */
     protected function getParams(): array
     {
-        $result = ['operations' => array_map(function () {
-
+        $result = ['operations' => array_map(function (IProperty $item) {
+            return $item->toArray();
         }, $this->getProperties())];
         if (($userId = $this->getUserId()) !== null) {
             $result['by_user_id'] = $userId;
@@ -92,7 +94,13 @@ class SetPropertiesService implements ISetPropertiesService
      */
     public function setProperties(array $properties): ISetPropertiesService
     {
-        $this->properties = $properties;
+        foreach ($properties as $property) {
+            if (!$property instanceof IProperty) {
+                $this->addProperty($property['operation'], $property['property'], $property['value']);
+            } else {
+                $this->addProperty($property->getOperation(), $property->getParam(), $property->getValue());
+            }
+        }
 
         return $this;
     }
@@ -139,5 +147,21 @@ class SetPropertiesService implements ISetPropertiesService
     protected function getMethod(): string
     {
         return str_replace('{id}', $this->getUserId(), self::METHOD_SET_PROPERTIES);
+    }
+
+    /**
+     * Add property
+     *
+     * @param string $operation
+     * @param string $property
+     * @param        $value
+     *
+     * @return ISetPropertiesService
+     */
+    public function addProperty(string $operation, string $property, $value): ISetPropertiesService
+    {
+        $this->properties[] = new Property($operation, $property, $value);
+
+        return $this;
     }
 }

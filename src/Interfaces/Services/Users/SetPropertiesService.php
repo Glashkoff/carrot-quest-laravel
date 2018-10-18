@@ -18,13 +18,24 @@ interface SetPropertiesService extends Sendable
     public function setUserId(int $userId): self;
 
     /**
-     * Filter by event name
+     * Set properties
      *
      * @param array $properties
      *
      * @return SetPropertiesService
      */
     public function setProperties(array $properties): self;
+
+    /**
+     * Add property
+     *
+     * @param string $operation
+     * @param string $property
+     * @param        $value
+     *
+     * @return SetPropertiesService
+     */
+    public function addProperty(string $operation, string $property, $value): self;
 
     /**
      * Set user id is not carrot's id
