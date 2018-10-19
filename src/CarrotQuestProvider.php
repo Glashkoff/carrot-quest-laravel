@@ -63,7 +63,7 @@ class CarrotQuestProvider extends ServiceProvider
     {
         $this->app->bind(ITransport::class, function () {
             return new Transport(
-                config('carrot-quest.url', ''),
+                config('carrot-quest.url', 'https://api.carrotquest.io/v1'),
                 config('carrot-quest.auth-token', '')
             );
         });
