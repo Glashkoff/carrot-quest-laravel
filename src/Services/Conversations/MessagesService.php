@@ -33,7 +33,7 @@ class MessagesService implements IMessagesService
     {
         return array_map(function (array $data) {
             return new Message($data);
-        }, $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? []);
+        }, $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? []);
     }
 
     /**

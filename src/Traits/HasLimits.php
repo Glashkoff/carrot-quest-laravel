@@ -33,7 +33,7 @@ trait HasLimits
      *
      * @return int
      */
-    public function getOffset(): int
+    public function getOffset(): ?int
     {
         return $this->offset;
     }
@@ -57,7 +57,7 @@ trait HasLimits
      *
      * @return int
      */
-    public function getLimit(): int
+    public function getLimit(): ?int
     {
         return $this->limit;
     }

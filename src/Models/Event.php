@@ -2,6 +2,7 @@
 
 use professionalweb\CarrotQuest\Interfaces\Models\EventType;
 use professionalweb\CarrotQuest\Interfaces\Models\Event as IEvent;
+use professionalweb\CarrotQuest\Models\EventType as EventTypeModel;
 
 /**
  * Event model
@@ -134,6 +135,7 @@ class Event implements IEvent
         return $this
             ->setId($data['id'] ?? 0)
             ->setProperties($data['props'] ?? [])
-            ->setType($data['type'] ?? []);
+            ->setCreatedAt(isset($data['created']) ? date('Y-m-d H:i:s', $data['created']) : '')
+            ->setType(new EventTypeModel($data['type'] ?? []));
     }
 }

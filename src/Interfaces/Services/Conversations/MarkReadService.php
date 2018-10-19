@@ -1,8 +1,8 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Conversations;
 
-use professionalweb\CarrotQuest\Interfaces\ListService;
+use professionalweb\CarrotQuest\Interfaces\Sendable;
 
-interface MarkReadService extends ListService
+interface MarkReadService extends Sendable
 {
     /**
      * Set conversation id

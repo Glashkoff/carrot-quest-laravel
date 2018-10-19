@@ -23,6 +23,11 @@ class EventType implements IEventType
      */
     private $score;
 
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
     /**
      * Get id
      *
