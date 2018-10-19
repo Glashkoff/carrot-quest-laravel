@@ -34,12 +34,12 @@ interface ApplicationService
      *
      * @return ConversationsService
      */
-    public function getConversations(): ConversationsService;
+    public function conversations(): ConversationsService;
 
     /**
      * Get service to work with channels
      *
      * @return ChannelsService
      */
-    public function getChannels(): ChannelsService;
+    public function channels(): ChannelsService;
 }

@@ -62,7 +62,7 @@ class ApplicationService implements IApplicationService
      *
      * @return ConversationsService
      */
-    public function getConversations(): ConversationsService
+    public function conversations(): ConversationsService
     {
         /** @var ConversationsService $service */
         $service = app(ConversationsService::class);
@@ -75,7 +75,7 @@ class ApplicationService implements IApplicationService
      *
      * @return ChannelsService
      */
-    public function getChannels(): ChannelsService
+    public function channels(): ChannelsService
     {
         /** @var ChannelsService $service */
         $service = app(ChannelsService::class);

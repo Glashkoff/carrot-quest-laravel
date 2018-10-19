@@ -98,7 +98,7 @@ class ReplyService implements IReplyService
     /**
      * @return bool
      */
-    public function isFromUser(): bool
+    public function isFromUser(): ?bool
     {
         return $this->fromUser;
     }

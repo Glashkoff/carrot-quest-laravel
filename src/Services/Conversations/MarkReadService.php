@@ -29,7 +29,7 @@ class MarkReadService implements IMarkReadService
      */
     public function send(): array
     {
-        return $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? [];
+        return $this->getTransport()->post($this->getMethod())['data'] ?? [];
     }
 
     /**
