@@ -179,8 +179,8 @@ class AddEventService implements IAddEventService
     {
         $result = ['event' => $this->getEventName()];
 
-        if (($params = $this->getParams()) !== null) {
-            $result['params'] = $params;
+        if (!empty($params = $this->getParams())) {
+            $result['params'] = json_encode($params);
         }
         if (($createdAt = $this->getCreatedAt()) !== null) {
             $result['created'] = $createdAt;

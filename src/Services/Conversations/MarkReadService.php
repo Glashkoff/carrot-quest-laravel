@@ -1,52 +1,28 @@
-<?php namespace professionalweb\CarrotQuest\Services\Users;
+<?php namespace professionalweb\CarrotQuest\Services\Conversations;
 
 use professionalweb\CarrotQuest\Traits\HasLimits;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
-use professionalweb\CarrotQuest\Interfaces\Services\Users\ConversationsService as IConversationsService;
+use professionalweb\CarrotQuest\Interfaces\Services\Conversations\MarkReadService as IMarkReadService;
 
 /**
- * Service to get users conversations
- * @package professionalweb\CarrotQuest\Services\Users
+ * Service to mark conversation read
+ * @package professionalweb\CarrotQuest\Services\Conversations
  */
-class ConversationsService implements IConversationsService
+class MarkReadService implements IMarkReadService
 {
     use UseTransport, HasLimits;
 
-    public const METHOD_CONVERSATIONS = '/users/{id}/conversations';
+    public const METHOD_MARK_READ = '/conversations/{id}/markread';
 
     /**
      * @var int
      */
-    private $userId;
+    private $conversationId;
 
     public function __construct(Transport $transport)
     {
         $this->setTransport($transport);
-    }
-
-    /**
-     * Set user id
-     *
-     * @param int $userId
-     *
-     * @return IConversationsService
-     */
-    public function setUserId(int $userId): IConversationsService
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get user id
-     *
-     * @return int|null
-     */
-    public function getUserId(): ?int
-    {
-        return $this->userId;
     }
 
     /**
@@ -77,12 +53,36 @@ class ConversationsService implements IConversationsService
     }
 
     /**
+     * Set conversation id
+     *
+     * @param int $id
+     *
+     * @return IMarkReadService
+     */
+    public function setConversationId(int $id): IMarkReadService
+    {
+        $this->conversationId = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get conversation id
+     *
+     * @return int
+     */
+    public function getConversationId(): int
+    {
+        return $this->conversationId;
+    }
+
+    /**
      * Get API method
      *
      * @return string
      */
     protected function getMethod(): string
     {
-        return str_replace('{id}', $this->getUserId(), self::METHOD_CONVERSATIONS);
+        return str_replace('{id}', $this->getConversationId(), self::METHOD_MARK_READ);
     }
 }

@@ -1,10 +1,12 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Users;
 
+use professionalweb\CarrotQuest\Interfaces\GetData;
+
 /**
  * Interface for service to work with users
  * @package professionalweb\CarrotQuest\Interfaces\Services\Users
  */
-interface UserService
+interface UserService extends GetData
 {
 
     /**

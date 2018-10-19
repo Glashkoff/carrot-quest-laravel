@@ -1,6 +1,7 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
 use professionalweb\CarrotQuest\Interfaces\Services\Users\EventsService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\GetUserService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\AddEventService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\SetStatusService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\UnsubscribeService;
@@ -148,5 +149,16 @@ class UserService implements IUserService
         $service = app(UnsubscribeService::class);
 
         return $service->setUserId($this->getUserId());
+    }
+
+    /**
+     * @return array
+     */
+    public function get(): array
+    {
+        /** @var GetUserService $service */
+        $service = app(GetUserService::class);
+
+        return $service->setUserId($this->getUserId())->get();
     }
 }

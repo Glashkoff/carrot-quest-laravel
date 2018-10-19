@@ -6,6 +6,7 @@ use professionalweb\CarrotQuest\Interfaces\Services\Conversations\CloseService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\AssignService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\TypingService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\MessagesService;
+use professionalweb\CarrotQuest\Interfaces\Services\Conversations\MarkReadService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ConversationService as IConversationService;
 
 /**
@@ -72,11 +73,14 @@ class ConversationService implements IConversationService
     /**
      * Mark conversation is read
      *
-     * @return bool
+     * @return MarkReadService
      */
-    public function markRead(): bool
+    public function markRead(): MarkReadService
     {
-        // TODO: Implement markRead() method.
+        /** @var MarkReadService $service */
+        $service = app(MarkReadService::class);
+
+        return $service->setConversationId($this->getConversationId());
     }
 
     /**
@@ -132,10 +136,15 @@ class ConversationService implements IConversationService
     }
 
     /**
+     * Get conversation
+     *
      * @return array
      */
     public function get(): array
     {
-        // TODO: Implement get() method.
+        /** @var ConversationDataService $service */
+        $service = app(ConversationDataService::class);
+
+        return $service->setConversationId($this->getConversationId())->get();
     }
 }

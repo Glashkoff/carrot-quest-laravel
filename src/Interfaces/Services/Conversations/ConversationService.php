@@ -34,9 +34,9 @@ interface ConversationService extends GetData
     /**
      * Mark conversation is read
      *
-     * @return bool
+     * @return MarkReadService
      */
-    public function markRead(): bool;
+    public function markRead(): MarkReadService;
 
     /**
      * Set someone typing
