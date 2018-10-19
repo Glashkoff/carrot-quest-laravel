@@ -35,24 +35,22 @@ class Transport implements ITransport
      */
     protected function send(string $method, string $url, array $data = []): string
     {
-        $getParams = [
-            'auth_token' => $this->getAuthToken(),
-        ];
+        $data['auth_token'] = $this->getAuthToken();
 
         if ($method === self::METHOD_GET) {
-            $getParams = array_merge($getParams, $data);
-            $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($getParams);
+            $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query($data);
         }
 
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_USERAGENT, 'ProfessionalWeb.CarrotQuest.SDK/PHP');
         if ($method === self::METHOD_POST) {
             curl_setopt($curl, CURLOPT_POST, 1);
-            $query = http_build_query($data);
+//            $query = http_build_query($data);
+            $query = json_encode($data);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $query);
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Expect:']);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, ['Expect:', 'Content-Type: application/json']);
         $body = curl_exec($curl);
         $error = curl_error($curl);
         $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
