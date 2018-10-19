@@ -1,7 +1,9 @@
 <?php namespace professionalweb\CarrotQuest\Services\Conversations;
 
+use professionalweb\CarrotQuest\Models\Conversation;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
+use professionalweb\CarrotQuest\Interfaces\Models\Conversation as IConversation;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ConversationData;
 
 /**
@@ -49,11 +51,11 @@ class ConversationDataService implements ConversationData
     }
 
     /**
-     * @return array
+     * @return IConversation
      */
-    public function get(): array
+    public function get(): IConversation
     {
-        return $this->getTransport()->get($this->getMethod())['data'] ?? [];
+        return new Conversation($this->getTransport()->get($this->getMethod())['data'] ?? []);
     }
 
     /**

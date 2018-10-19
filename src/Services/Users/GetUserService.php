@@ -1,7 +1,9 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
+use professionalweb\CarrotQuest\Models\User;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
+use professionalweb\CarrotQuest\Interfaces\Models\User as IUser;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\GetUserService as IGetUserService;
 
 /**
@@ -66,9 +68,9 @@ class GetUserService implements IGetUserService
     /**
      * @return array
      */
-    public function get(): array
+    public function get(): IUser
     {
-        return $this->getTransport()->get($this->getMethod(), $this->getParams());
+        return new User($this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? []);
     }
 
     /**

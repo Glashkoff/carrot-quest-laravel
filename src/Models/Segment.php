@@ -23,6 +23,11 @@ class Segment implements ISegment
      */
     private $filters;
 
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
     /**
      * Get id
      *
@@ -87,5 +92,25 @@ class Segment implements ISegment
         $this->filters = $filters;
 
         return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Segment
+     */
+    public function fill(array $data): self
+    {
+        $filters = $data['filters'] ?? null;
+        if (!empty($filters) && \is_string($filters)) {
+            $filters = json_decode($filters, true) ?? '';
+        }
+
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setName($data['name'] ?? '')
+            ->setFilters($filters);
     }
 }

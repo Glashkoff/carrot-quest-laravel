@@ -28,6 +28,11 @@ class Admin implements IAdmin
      */
     private $type;
 
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
     /**
      * Get admin id
      *
@@ -114,5 +119,21 @@ class Admin implements IAdmin
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Admin
+     */
+    public function fill(array $data): self
+    {
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setName($data['name'] ?? '')
+            ->setAvatar($data['avatar'] ?? '')
+            ->setType($data['type'] ?? '');
     }
 }

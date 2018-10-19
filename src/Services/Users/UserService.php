@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
+use professionalweb\CarrotQuest\Interfaces\Models\User;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\EventsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\GetUserService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\AddEventService;
@@ -152,9 +153,9 @@ class UserService implements IUserService
     }
 
     /**
-     * @return array
+     * @return User
      */
-    public function get(): array
+    public function get(): User
     {
         /** @var GetUserService $service */
         $service = app(GetUserService::class);

@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Applications;
 
+use professionalweb\CarrotQuest\Models\User;
 use professionalweb\CarrotQuest\Traits\HasLimits;
 use professionalweb\CarrotQuest\Traits\IsSortable;
 use professionalweb\CarrotQuest\Traits\UseTransport;
@@ -32,7 +33,11 @@ class UsersService implements IUsersService
      */
     public function get(): array
     {
-        return $this->getTransport()->get($this->getMethod());
+        $result = $this->getTransport()->get($this->getMethod())['data'] ?? [];
+
+        return isset($result['users']) ? array_map(function (array $data) {
+            return new User($data);
+        }, $result['users']) : [];
     }
 
     protected function getParams(): array

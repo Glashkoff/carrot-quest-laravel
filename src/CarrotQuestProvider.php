@@ -2,8 +2,10 @@
 
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use professionalweb\CarrotQuest\Services\Creator;
 use professionalweb\CarrotQuest\Services\Transport;
 use professionalweb\CarrotQuest\Services\CarrotQuest;
+use professionalweb\CarrotQuest\Interfaces\ObjectCreator;
 use professionalweb\CarrotQuest\Services\Users\UserService;
 use professionalweb\CarrotQuest\Services\Users\EventsService;
 use professionalweb\CarrotQuest\Services\Users\GetUserService;
@@ -67,6 +69,8 @@ class CarrotQuestProvider extends ServiceProvider
                 config('carrot-quest.auth-token', '')
             );
         });
+
+        $this->app->bind(ObjectCreator::class, Creator::class);
 
         // Application services
         $this->app->bind(IUsersService::class, UsersService::class);

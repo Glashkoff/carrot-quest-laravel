@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
+use professionalweb\CarrotQuest\Models\Event;
 use professionalweb\CarrotQuest\Traits\HasLimits;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
@@ -83,7 +84,9 @@ class EventsService implements IEventsService
      */
     public function get(): array
     {
-        return $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? [];
+        return array_map(function (array $data) {
+            return new Event($data);
+        }, $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? []);
     }
 
     /**

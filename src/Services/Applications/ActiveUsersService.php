@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Applications;
 
+use professionalweb\CarrotQuest\Models\User;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ActiveUsersService as IActiveUsersService;
@@ -29,7 +30,9 @@ class ActiveUsersService implements IActiveUsersService
      */
     public function get(): array
     {
-        return $this->getTransport()->get($this->getMethod())['data'] ?? [];
+        return array_map(function (array $data) {
+            return new User($data);
+        }, $this->getTransport()->get($this->getMethod())['data'] ?? []);
     }
 
     /**

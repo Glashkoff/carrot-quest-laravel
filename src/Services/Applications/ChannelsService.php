@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Applications;
 
+use professionalweb\CarrotQuest\Models\Channel;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ChannelsService as IChannelsService;
@@ -29,7 +30,9 @@ class ChannelsService implements IChannelsService
      */
     public function get(): array
     {
-        return $this->getTransport()->get($this->getMethod())['data'] ?? [];
+        return array_map(function (array $data) {
+            return new Channel($data);
+        }, $this->getTransport()->get($this->getMethod())['data'] ?? []);
     }
 
     /**

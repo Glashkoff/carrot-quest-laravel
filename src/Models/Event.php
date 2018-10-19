@@ -29,6 +29,11 @@ class Event implements IEvent
      */
     private $properties;
 
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
     /**
      * Get id
      *
@@ -115,5 +120,20 @@ class Event implements IEvent
         $this->properties = $properties;
 
         return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Event
+     */
+    public function fill(array $data): self
+    {
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setProperties($data['props'] ?? [])
+            ->setType($data['type'] ?? []);
     }
 }

@@ -38,6 +38,11 @@ class Attachment implements IAttachment
      */
     private $type;
 
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
     /**
      * Get attachment id
      *
@@ -168,5 +173,23 @@ class Attachment implements IAttachment
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Attachment
+     */
+    public function fill(array $data): self
+    {
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setSize($data['size'] ?? 0)
+            ->setFileName($data['filename'] ?? '')
+            ->setMimeType($data['mime_type'] ?? '')
+            ->setUrl($data['url'] ?? '')
+            ->setType($data['type'] ?? '');
     }
 }

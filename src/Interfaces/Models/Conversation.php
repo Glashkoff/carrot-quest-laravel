@@ -58,6 +58,13 @@ interface Conversation
     public function isReplied(): bool;
 
     /**
+     * Check user is unsubscribed
+     *
+     * @return bool
+     */
+    public function isUnsubscribed(): bool;
+
+    /**
      * Check user clicked any link in first message
      *
      * @return bool

@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Conversations;
 
+use professionalweb\CarrotQuest\Interfaces\Models\Conversation;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\TagService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ReplyService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\CloseService;
@@ -138,9 +139,9 @@ class ConversationService implements IConversationService
     /**
      * Get conversation
      *
-     * @return array
+     * @return Conversation
      */
-    public function get(): array
+    public function get(): Conversation
     {
         /** @var ConversationDataService $service */
         $service = app(ConversationDataService::class);

@@ -28,6 +28,11 @@ class Note implements INote
      */
     private $createdAt;
 
+    public function __construct(array $data)
+    {
+        $this->fill($data);
+    }
+
     /**
      * Get id
      *
@@ -114,5 +119,21 @@ class Note implements INote
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Note
+     */
+    public function fill(array $data): self
+    {
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setCreatedAt(isset($data['created']) ? date('Y-m-d H:i:s', $data['created']) : '')
+            ->setBody($data['body'] ?? '')
+            ->setAuthor(new Admin($data['author'] ?? []));
     }
 }

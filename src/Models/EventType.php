@@ -88,4 +88,19 @@ class EventType implements IEventType
 
         return $this;
     }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return EventType
+     */
+    public function fill(array $data): self
+    {
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setName($data['name'])
+            ->setScore($data['score'] ?? 0);
+    }
 }

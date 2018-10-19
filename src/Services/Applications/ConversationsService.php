@@ -2,6 +2,7 @@
 
 use professionalweb\CarrotQuest\Traits\HasLimits;
 use professionalweb\CarrotQuest\Traits\IsSortable;
+use professionalweb\CarrotQuest\Models\Conversation;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Traits\HasConditions;
 use professionalweb\CarrotQuest\Interfaces\Transport;
@@ -174,7 +175,9 @@ class ConversationsService implements IConversationService
      */
     public function get(): array
     {
-        return $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? [];
+        return array_map(function (array $data) {
+            return new Conversation($data);
+        }, $this->getTransport()->get($this->getMethod(), $this->getParams())['data'] ?? []);
     }
 
     /**

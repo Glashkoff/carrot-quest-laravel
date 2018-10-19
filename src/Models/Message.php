@@ -1,7 +1,11 @@
 <?php namespace professionalweb\CarrotQuest\Models;
 
 use professionalweb\CarrotQuest\Interfaces\Models\User;
+use professionalweb\CarrotQuest\Interfaces\Models\Admin;
+use professionalweb\CarrotQuest\Models\User as UserModel;
+use professionalweb\CarrotQuest\Models\Admin as AdminModel;
 use professionalweb\CarrotQuest\Interfaces\Models\Attachment;
+use professionalweb\CarrotQuest\Models\Attachment as AttachmentModel;
 use professionalweb\CarrotQuest\Interfaces\Models\Message as IMessage;
 
 /**
@@ -42,6 +46,11 @@ class Message implements IMessage
     private $user;
 
     /**
+     * @var Admin
+     */
+    private $admin;
+
+    /**
      * @var bool
      */
     private $isRead;
@@ -65,7 +74,13 @@ class Message implements IMessage
      * @var array|Attachment
      */
     private $attachments;
+
     //</editor-fold>
+
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
 
     /**
      * Get message id
@@ -125,6 +140,40 @@ class Message implements IMessage
     public function getUser(): User
     {
         return $this->user;
+    }
+
+    /**
+     * Check is admin
+     *
+     * @return bool
+     */
+    public function isFromAdmin(): bool
+    {
+        return $this->admin !== null;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param Admin $admin
+     *
+     * @return Message
+     */
+    public function setAdmin(Admin $admin): self
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return Admin
+     */
+    public function getAdmin(): Admin
+    {
+        return $this->admin;
     }
 
     /**
@@ -309,5 +358,38 @@ class Message implements IMessage
         return $this;
     }
 
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Message
+     */
+    public function fill(array $data): self
+    {
+        $this
+            ->setId($data['id'] ?? 0)
+            ->setCreatedAt(isset($data['created']) ? date('Y-m-d H:i:s', $data['created']) : '')
+            ->setIsFirst(isset($data['first']) && $data['first'])
+            ->setConversationId($data['conversation'] ?? 0)
+            ->setBody($data['body'] ?? '')
+            ->setIsRead(isset($data['read']) && $data['read'])
+            ->setType($data['type'] ?? '')
+            ->setSentVia($data['sent_via'] ?? '')
+            ->setEmailId($data['inbound_email'] ?? 0);
+        if (isset($data['from']) && \is_array($data['from'])) {
+            $this->setAdmin(new AdminModel($data['from']));
+        } else {
+            $this->setUser(new UserModel(['id' => $data['from']]));
+        }
+        if (isset($data['attachments'])) {
+            $attachments = [];
+            foreach ($data['attachments'] as $attachment) {
+                $attachments[] = new AttachmentModel($attachment);
+            }
+            $this->setAttachments($attachments);
+        }
 
+        return $this;
+    }
 }

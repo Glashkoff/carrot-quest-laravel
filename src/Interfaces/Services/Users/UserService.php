@@ -1,14 +1,13 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Users;
 
-use professionalweb\CarrotQuest\Interfaces\GetData;
+use professionalweb\CarrotQuest\Interfaces\Models\User;
 
 /**
  * Interface for service to work with users
  * @package professionalweb\CarrotQuest\Interfaces\Services\Users
  */
-interface UserService extends GetData
+interface UserService
 {
-
     /**
      * Set user id
      *
@@ -73,4 +72,11 @@ interface UserService extends GetData
      * @return UnsubscribeService
      */
     public function unsubscribe(): UnsubscribeService;
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function get(): User;
 }

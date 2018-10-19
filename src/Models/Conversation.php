@@ -2,7 +2,10 @@
 
 use professionalweb\CarrotQuest\Interfaces\Models\User;
 use professionalweb\CarrotQuest\Interfaces\Models\Admin;
+use professionalweb\CarrotQuest\Models\User as UserModel;
 use professionalweb\CarrotQuest\Interfaces\Models\Message;
+use professionalweb\CarrotQuest\Models\Admin as AdminModel;
+use professionalweb\CarrotQuest\Models\Message as MessageModel;
 use professionalweb\CarrotQuest\Interfaces\Models\Conversation as IConversation;
 
 /**
@@ -46,6 +49,11 @@ class Conversation implements IConversation
      * @var bool
      */
     private $isClosed;
+
+    /**
+     * @var bool
+     */
+    private $isUnsubscribed;
 
     /**
      * @var int
@@ -96,7 +104,13 @@ class Conversation implements IConversation
      * @var array
      */
     private $tags;
+
     //</editor-fold>
+
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
 
     /**
      * Get conversation ID
@@ -269,6 +283,16 @@ class Conversation implements IConversation
     }
 
     /**
+     * Check user is unsubscribed
+     *
+     * @return bool
+     */
+    public function isUnsubscribed(): bool
+    {
+        return $this->isUnsubscribed;
+    }
+
+    /**
      * @param int $id
      *
      * @return $this
@@ -348,6 +372,20 @@ class Conversation implements IConversation
     public function setIsClosed(bool $isClosed): self
     {
         $this->isClosed = $isClosed;
+
+        return $this;
+    }
+
+    /**
+     * Set user is unsubscribed
+     *
+     * @param bool $flag
+     *
+     * @return Conversation
+     */
+    public function setIsUnsubscribed(bool $flag = true): self
+    {
+        $this->isUnsubscribed = $flag;
 
         return $this;
     }
@@ -470,5 +508,35 @@ class Conversation implements IConversation
         $this->tags = $tags;
 
         return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return Conversation
+     */
+    public function fill(array $data): self
+    {
+        return $this
+            ->setId($data['id'] ?? 0)
+            ->setCreatedAt(isset($data['created']) ? date('Y-m-d H:i:s', $data['created']) : '')
+            ->setUser(new UserModel($data['user'] ?? []))
+            ->setIsRead(isset($data['read']) && $data['read'])
+            ->setIsReplied(isset($data['replied']) && $data['replied'])
+            ->setIsClicked(isset($data['clicked']) && $data['clicked'])
+            ->setIsClosed(isset($data['closed']) && $data['closed'])
+            ->setIsUnsubscribed(isset($data['unsubscribed']) && $data['unsubscribed'])
+            ->setMessageQuantity($data['parts_count'] ?? 0)
+            ->setType($data['type'] ?? '')
+            ->setReplyType($data['reply_type'] ?? '')
+            ->setLastMessage(new MessageModel($data['part_last'] ?? []))
+            ->setStartMessageId($data['message'] ?? 0)
+            ->setAdmin(new AdminModel($data['assignee'] ?? []))
+            ->setUnreadMessagesQuantity($data['unread_parts_count'] ?? 0)
+            ->setLastAdmin(new AdminModel($data['last_admin'] ?? []))
+            ->setUpdatedAt(isset($data['last_update']) ? date('Y-m-d H:i:s', $data['last_update']) : '')
+            ->setTags($data['tags'] ?? []);
     }
 }

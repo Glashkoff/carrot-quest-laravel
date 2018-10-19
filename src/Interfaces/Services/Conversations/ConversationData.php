@@ -1,8 +1,8 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Conversations;
 
-use professionalweb\CarrotQuest\Interfaces\GetData;
+use professionalweb\CarrotQuest\Interfaces\Models\Conversation;
 
-interface ConversationData extends GetData
+interface ConversationData
 {
     /**
      * Set conversation id
@@ -12,4 +12,11 @@ interface ConversationData extends GetData
      * @return ConversationData
      */
     public function setConversationId(int $id): self;
+
+    /**
+     * Get conversation
+     *
+     * @return Conversation
+     */
+    public function get(): Conversation;
 }

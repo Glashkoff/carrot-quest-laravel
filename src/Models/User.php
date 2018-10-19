@@ -2,7 +2,10 @@
 
 use professionalweb\CarrotQuest\Interfaces\Models\Note;
 use professionalweb\CarrotQuest\Interfaces\Models\Event;
+use professionalweb\CarrotQuest\Models\Note as NoteModel;
 use professionalweb\CarrotQuest\Interfaces\Models\Segment;
+use professionalweb\CarrotQuest\Models\Event as EventModel;
+use professionalweb\CarrotQuest\Models\Segment as SegmentModel;
 use professionalweb\CarrotQuest\Interfaces\Models\User as IUser;
 
 /**
@@ -61,7 +64,13 @@ class User implements IUser
      * @var array|Note[]
      */
     private $notes;
+
     //</editor-fold>
+
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
 
     /**
      * Get id
@@ -279,6 +288,47 @@ class User implements IUser
     public function setNotes($notes): self
     {
         $this->notes = $notes;
+
+        return $this;
+    }
+
+    /**
+     * Fill model
+     *
+     * @param array $data
+     *
+     * @return User
+     */
+    public function fill(array $data): self
+    {
+        $this
+            ->setId($data['id'] ?? 0)
+            ->setStatus($data['presence'] ?? self::STATUS_IDLE)
+            ->setStatusDetails($data['presence_details'] ?? [])
+            ->setProperties($data['props'] ?? [])
+            ->setCustomProperties($data['props_custom'] ?? [])
+            ->setEventProperties($data['props_events'] ?? []);
+        if (isset($data['events'])) {
+            $events = [];
+            foreach ($data['events'] as $event) {
+                $events[] = new EventModel($event);
+            }
+            $this->setEvents($events);
+        }
+        if (isset($data['segments'])) {
+            $segments = [];
+            foreach ($data['segments'] as $segment) {
+                $segments[] = new SegmentModel($segment);
+            }
+            $this->setSegments($segments);
+        }
+        if (isset($data['notes'])) {
+            $notes = [];
+            foreach ($data['notes'] as $note) {
+                $notes[] = new NoteModel($note);
+            }
+            $this->setNotes($notes);
+        }
 
         return $this;
     }

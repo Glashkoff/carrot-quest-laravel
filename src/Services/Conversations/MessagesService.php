@@ -1,5 +1,6 @@
 <?php namespace professionalweb\CarrotQuest\Services\Conversations;
 
+use professionalweb\CarrotQuest\Models\Message;
 use professionalweb\CarrotQuest\Traits\HasLimits;
 use professionalweb\CarrotQuest\Traits\UseTransport;
 use professionalweb\CarrotQuest\Interfaces\Transport;
@@ -30,7 +31,9 @@ class MessagesService implements IMessagesService
      */
     public function get(): array
     {
-        return $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? [];
+        return array_map(function (array $data) {
+            return new Message($data);
+        }, $this->getTransport()->post($this->getMethod(), $this->getParams())['data'] ?? []);
     }
 
     /**
