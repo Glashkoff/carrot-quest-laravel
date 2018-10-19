@@ -1,7 +1,5 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Users;
 
-use professionalweb\CarrotQuest\Interfaces\Models\User;
-
 /**
  * Interface for service to work with users
  * @package professionalweb\CarrotQuest\Interfaces\Services\Users
@@ -16,15 +14,6 @@ interface UserService
      * @return UserService
      */
     public function setUserId(int $userId): self;
-
-    /**
-     * Use system ids
-     *
-     * @param bool $flag
-     *
-     * @return UserService
-     */
-    public function byUserId(bool $flag = true): self;
 
     /**
      * Get event service
@@ -85,7 +74,7 @@ interface UserService
     /**
      * Get user
      *
-     * @return User
+     * @return GetUserService
      */
-    public function get(): User;
+    public function user(): GetUserService;
 }

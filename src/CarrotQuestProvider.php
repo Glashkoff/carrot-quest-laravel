@@ -22,6 +22,7 @@ use professionalweb\CarrotQuest\Services\Users\SetPropertiesService;
 use professionalweb\CarrotQuest\Services\Conversations\AssignService;
 use professionalweb\CarrotQuest\Services\Conversations\TypingService;
 use professionalweb\CarrotQuest\Services\Applications\ChannelsService;
+use professionalweb\CarrotQuest\Services\Conversations\MarkReadService;
 use professionalweb\CarrotQuest\Interfaces\Services\CarrotQuestService;
 use professionalweb\CarrotQuest\Services\Conversations\MessagesService;
 use professionalweb\CarrotQuest\Services\Users\StartConversationService;
@@ -30,8 +31,11 @@ use professionalweb\CarrotQuest\Services\Applications\ApplicationService;
 use professionalweb\CarrotQuest\Facades\CarrotQuest as CarrotQuestFacade;
 use professionalweb\CarrotQuest\Services\Applications\ConversationsService;
 use professionalweb\CarrotQuest\Services\Conversations\ConversationService;
+use professionalweb\CarrotQuest\Services\Conversations\ConversationDataService;
+use professionalweb\CarrotQuest\Interfaces\Services\Conversations\ConversationData;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\UserService as IUserService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\EventsService as IEventsService;
+use professionalweb\CarrotQuest\Interfaces\Services\Users\GetUserService as IGetUserService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\TagService as ITagService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\AddEventService as IAddEventService;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\UsersService as IUsersService;
@@ -44,6 +48,7 @@ use professionalweb\CarrotQuest\Interfaces\Services\Conversations\AssignService 
 use professionalweb\CarrotQuest\Interfaces\Services\Users\SendMessageService as ISendMessageService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\UnsubscribeService as IUnsubscribeService;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ChannelsService as IChannelsService;
+use professionalweb\CarrotQuest\Interfaces\Services\Conversations\MarkReadService as IMarkReadService;
 use professionalweb\CarrotQuest\Interfaces\Services\Conversations\MessagesService as IMessagesService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\SetPropertiesService as ISetPropertiesService;
 use professionalweb\CarrotQuest\Interfaces\Services\Applications\ActiveUsersService as IActiveUsersService;
@@ -86,13 +91,15 @@ class CarrotQuestProvider extends ServiceProvider
         $this->app->bind(ICloseService::class, CloseService::class);
         $this->app->bind(ITypingService::class, TypingService::class);
         $this->app->bind(IAssignService::class, AssignService::class);
+        $this->app->bind(IMarkReadService::class, MarkReadService::class);
         $this->app->bind(IMessagesService::class, MessagesService::class);
         $this->app->bind(IConversationService::class, ConversationService::class);
+        $this->app->bind(ConversationData::class, ConversationDataService::class);
 
         // Users services
         $this->app->bind(IUserService::class, UserService::class);
         $this->app->bind(IEventsService::class, EventsService::class);
-        $this->app->bind(GetUserService::class, GetUserService::class);
+        $this->app->bind(IGetUserService::class, GetUserService::class);
         $this->app->bind(IAddEventService::class, AddEventService::class);
         $this->app->bind(ISetStatusService::class, SetStatusService::class);
         $this->app->bind(ISendMessageService::class, SendMessageService::class);

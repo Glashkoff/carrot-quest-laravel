@@ -1,6 +1,5 @@
 <?php namespace professionalweb\CarrotQuest\Services\Users;
 
-use professionalweb\CarrotQuest\Interfaces\Models\User;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\EventsService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\GetUserService;
 use professionalweb\CarrotQuest\Interfaces\Services\Users\AddEventService;
@@ -23,26 +22,6 @@ class UserService implements IUserService
      * @var int
      */
     private $userId;
-
-    /**
-     * @var bool
-     */
-    private $byUserId = false;
-
-    public function byUserId(bool $flag = true): self
-    {
-        $this->byUserId = $flag;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isByUserId(): bool
-    {
-        return $this->byUserId;
-    }
 
     /**
      * Set user id
@@ -104,7 +83,7 @@ class UserService implements IUserService
         /** @var AddEventService $service */
         $service = app(AddEventService::class);
 
-        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId());
+        return $service->setUserId($this->getUserId());
     }
 
     /**
@@ -117,7 +96,7 @@ class UserService implements IUserService
         /** @var SetPropertiesService $service */
         $service = app(SetPropertiesService::class);
 
-        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId());
+        return $service->setUserId($this->getUserId());
     }
 
     /**
@@ -169,17 +148,19 @@ class UserService implements IUserService
         /** @var UnsubscribeService $service */
         $service = app(UnsubscribeService::class);
 
-        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId());
+        return $service->setUserId($this->getUserId());
     }
 
     /**
-     * @return User
+     * Get user
+     *
+     * @return GetUserService
      */
-    public function get(): User
+    public function user(): GetUserService
     {
         /** @var GetUserService $service */
         $service = app(GetUserService::class);
 
-        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId())->get();
+        return $service->setUserId($this->getUserId());
     }
 }
