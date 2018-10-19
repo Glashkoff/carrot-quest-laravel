@@ -18,6 +18,15 @@ interface UserService
     public function setUserId(int $userId): self;
 
     /**
+     * Use system ids
+     *
+     * @param bool $flag
+     *
+     * @return UserService
+     */
+    public function byUserId(bool $flag = true): self;
+
+    /**
      * Get event service
      *
      * @return EventsService

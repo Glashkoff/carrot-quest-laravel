@@ -25,6 +25,26 @@ class UserService implements IUserService
     private $userId;
 
     /**
+     * @var bool
+     */
+    private $byUserId = false;
+
+    public function byUserId(bool $flag = true): self
+    {
+        $this->byUserId = $flag;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isByUserId(): bool
+    {
+        return $this->byUserId;
+    }
+
+    /**
      * Set user id
      *
      * @param int $userId
@@ -84,7 +104,7 @@ class UserService implements IUserService
         /** @var AddEventService $service */
         $service = app(AddEventService::class);
 
-        return $service->setUserId($this->getUserId());
+        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId());
     }
 
     /**
@@ -97,7 +117,7 @@ class UserService implements IUserService
         /** @var SetPropertiesService $service */
         $service = app(SetPropertiesService::class);
 
-        return $service->setUserId($this->getUserId());
+        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId());
     }
 
     /**
@@ -149,7 +169,7 @@ class UserService implements IUserService
         /** @var UnsubscribeService $service */
         $service = app(UnsubscribeService::class);
 
-        return $service->setUserId($this->getUserId());
+        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId());
     }
 
     /**
@@ -160,6 +180,6 @@ class UserService implements IUserService
         /** @var GetUserService $service */
         $service = app(GetUserService::class);
 
-        return $service->setUserId($this->getUserId())->get();
+        return $service->setUserId($this->getUserId())->byUserId($this->isByUserId())->get();
     }
 }
