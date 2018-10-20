@@ -88,6 +88,20 @@ interface Message
     public function getUser(): User;
 
     /**
+     * Get admin
+     *
+     * @return Admin
+     */
+    public function getAdmin(): Admin;
+
+    /**
+     * Check is admin
+     *
+     * @return bool
+     */
+    public function isFromAdmin(): bool;
+
+    /**
      * Check message is read
      *
      * @return bool

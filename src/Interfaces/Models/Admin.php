@@ -6,6 +6,12 @@
  */
 interface Admin
 {
+    public const TYPE_ADMIN = 'admin';
+
+    public const TYPE_DEFAULT_ADMIN = 'default_admin';
+
+    public const TYPE_BOT = 'bot';
+
     /**
      * Get admin id
      *

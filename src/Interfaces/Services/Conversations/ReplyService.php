@@ -9,6 +9,15 @@ use professionalweb\CarrotQuest\Interfaces\Sendable;
 interface ReplyService extends Sendable
 {
     /**
+     * Set conversation id
+     *
+     * @param int $id
+     *
+     * @return ReplyService
+     */
+    public function setConversationId(int $id): self;
+
+    /**
      * Set message body
      *
      * @param string $body

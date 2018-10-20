@@ -9,6 +9,15 @@ use professionalweb\CarrotQuest\Interfaces\Sendable;
 interface TagService extends Sendable
 {
     /**
+     * Set conversation id
+     *
+     * @param int $id
+     *
+     * @return TagService
+     */
+    public function setConversationId(int $id): self;
+
+    /**
      * Set tag
      *
      * @param string $tag

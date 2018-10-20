@@ -1,12 +1,12 @@
 <?php namespace professionalweb\CarrotQuest\Interfaces\Services\Conversations;
 
-use professionalweb\CarrotQuest\Interfaces\GetData;
+use professionalweb\CarrotQuest\Interfaces\Models\Conversation;
 
 /**
  * Interface for service to work with conversations
  * @package professionalweb\CarrotQuest\Interfaces\Services\Conversations
  */
-interface ConversationService extends GetData
+interface ConversationService
 {
     /**
      * Set conversation id
@@ -34,9 +34,9 @@ interface ConversationService extends GetData
     /**
      * Mark conversation is read
      *
-     * @return bool
+     * @return MarkReadService
      */
-    public function markRead(): bool;
+    public function markRead(): MarkReadService;
 
     /**
      * Set someone typing
@@ -65,4 +65,11 @@ interface ConversationService extends GetData
      * @return CloseService
      */
     public function close(): CloseService;
+
+    /**
+     * Get conversation
+     *
+     * @return Conversation
+     */
+    public function get(): Conversation;
 }

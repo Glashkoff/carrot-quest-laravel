@@ -11,6 +11,15 @@ use professionalweb\CarrotQuest\Interfaces\HasConditions;
 interface ConversationsService extends ListService, Sortable, HasConditions
 {
     /**
+     * Set application ID
+     *
+     * @param int $id
+     *
+     * @return ConversationsService
+     */
+    public function setApplicationId(int $id): self;
+
+    /**
      * Include not assigned conversations
      *
      * @param bool $flag

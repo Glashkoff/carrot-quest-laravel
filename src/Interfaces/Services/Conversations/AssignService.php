@@ -9,11 +9,20 @@ use professionalweb\CarrotQuest\Interfaces\Sendable;
 interface AssignService extends Sendable
 {
     /**
+     * Set conversation id
+     *
+     * @param int $id
+     *
+     * @return AssignService
+     */
+    public function setConversationId(int $id): self;
+
+    /**
      * Set assigned by admin
      *
      * @param string $id
      *
-     * @return ReplyService
+     * @return AssignService
      */
     public function fromAdmin(string $id): self;
 
@@ -22,7 +31,7 @@ interface AssignService extends Sendable
      *
      * @param int $adminId
      *
-     * @return ReplyService
+     * @return AssignService
      */
     public function setAdminId(int $adminId): self;
 
@@ -31,7 +40,7 @@ interface AssignService extends Sendable
      *
      * @param string $botName
      *
-     * @return ReplyService
+     * @return AssignService
      */
     public function setBotName(string $botName): self;
 }
