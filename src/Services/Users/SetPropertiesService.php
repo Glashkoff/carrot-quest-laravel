@@ -54,8 +54,8 @@ class SetPropertiesService implements ISetPropertiesService
         $result = ['operations' => json_encode(array_map(function (IProperty $item) {
             return $item->toArray();
         }, $this->getProperties()))];
-        if (($userId = $this->getUserId()) !== null) {
-            $result['by_user_id'] = $userId;
+        if ($this->isByUserId()) {
+            $result['by_user_id'] = true;
         }
 
         return $result;

@@ -185,8 +185,8 @@ class AddEventService implements IAddEventService
         if (($createdAt = $this->getCreatedAt()) !== null) {
             $result['created'] = $createdAt;
         }
-        if (($userId = $this->getUserId()) !== null) {
-            $result['by_user_id'] = $userId;
+        if ($this->isByUserId()) {
+            $result['by_user_id'] = true;
         }
 
         return $result;
