@@ -25,7 +25,7 @@
   "require": {
     "php": ">=7.1",
     "ext-curl": "*",
-    "laravel/framework": "5.*",
+    "laravel/framework": "6.*",
     "ext-json": "*"
   },
   "require-dev": {
